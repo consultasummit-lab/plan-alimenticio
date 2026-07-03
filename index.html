@@ -334,7 +334,7 @@ async function fsGet(id){
 }
 async function fsSet(id, payload){
   var k = ensureEditKey();
-  if(!k) return false;
+  if(!k){ toast('No guardado — modo solo lectura'); return false; }
   try{
     await plDb.collection(PL_COL).doc(id).set({payload: payload, editKey: k, updatedAt: firebase.firestore.FieldValue.serverTimestamp()});
     return true;
@@ -448,7 +448,15 @@ function renderStats(){
   el.innerHTML += '<div style="align-self:center;"><div class="l">Próxima cita</div><div class="n" style="font-size:13px;">'+formatApptLabel(state.nextAppt)+'</div></div>';
   el.innerHTML += '<div style="align-self:center;"><input type="datetime-local" id="pl-next-appt" value="'+(state.nextAppt||'')+'" style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.3);color:#fff;border-radius:8px;padding:6px 8px;font-size:11px;"></div>';
   var apptInput = document.getElementById('pl-next-appt');
-  if(apptInput) apptInput.onchange=function(){ state.nextAppt=apptInput.value; saveNextAppt(); renderStats(); toast('Próxima cita actualizada'); };
+  if(apptInput) apptInput.onchange=function(){
+    var prev = state.nextAppt;
+    state.nextAppt=apptInput.value;
+    saveNextAppt().then(function(ok){
+      if(!ok){ state.nextAppt=prev; }
+      renderStats();
+      if(ok) toast('Próxima cita actualizada');
+    });
+  };
 
   var unlocked = !!getEditKey();
   el.innerHTML += '<div style="align-self:center;">'+
@@ -523,10 +531,20 @@ function renderHoy(){
   document.getElementById('pl-body').innerHTML = html;
 
   Array.prototype.forEach.call(document.querySelectorAll('[data-mealcheck]'), function(cb){
-    cb.onchange=function(){ state.dailyLog.meals[cb.getAttribute('data-mealcheck')]=cb.checked; saveDailyLog(); render(); };
+    cb.onchange=function(){
+      var mk = cb.getAttribute('data-mealcheck');
+      var prev = state.dailyLog.meals[mk];
+      state.dailyLog.meals[mk]=cb.checked; render();
+      saveDailyLog().then(function(ok){ if(!ok){ state.dailyLog.meals[mk]=prev; } render(); });
+    };
   });
   Array.prototype.forEach.call(document.querySelectorAll('[data-water]'), function(w){
-    w.onclick=function(){ var v=parseInt(w.getAttribute('data-water')); state.dailyLog.water = (state.dailyLog.water===v? v-1 : v); saveDailyLog(); render(); };
+    w.onclick=function(){
+      var v=parseInt(w.getAttribute('data-water'));
+      var prev = state.dailyLog.water;
+      state.dailyLog.water = (state.dailyLog.water===v? v-1 : v); render();
+      saveDailyLog().then(function(ok){ if(!ok){ state.dailyLog.water=prev; } render(); });
+    };
   });
   document.getElementById('pl-bp-add').onclick=function(){
     var sys=document.getElementById('pl-bp-sys').value;
@@ -535,18 +553,26 @@ function renderHoy(){
     if(!sys || !dia || !pulse){ toast('Completa sistólica, diastólica y pulso'); return; }
     var now=new Date();
     var time=('0'+now.getHours()).slice(-2)+':'+('0'+now.getMinutes()).slice(-2);
-    state.dailyLog.bp.push({time:time, sys:sys, dia:dia, pulse:pulse});
-    saveDailyLog(); render();
+    state.dailyLog.bp.push({time:time, sys:sys, dia:dia, pulse:pulse}); render();
+    saveDailyLog().then(function(ok){ if(!ok){ state.dailyLog.bp.pop(); } render(); });
   };
   Array.prototype.forEach.call(document.querySelectorAll('[data-bpremove]'), function(b){
-    b.onclick=function(){ state.dailyLog.bp.splice(parseInt(b.getAttribute('data-bpremove')),1); saveDailyLog(); render(); };
+    b.onclick=function(){
+      var idx = parseInt(b.getAttribute('data-bpremove'));
+      var removed = state.dailyLog.bp[idx];
+      state.dailyLog.bp.splice(idx,1); render();
+      saveDailyLog().then(function(ok){ if(!ok){ state.dailyLog.bp.splice(idx,0,removed); } render(); });
+    };
   });
   document.getElementById('pl-ex-save').onclick=function(){
+    var prev = state.dailyLog.exercise;
     state.dailyLog.exercise = {min: parseInt(document.getElementById('pl-ex-min').value)||0, kcal: parseInt(document.getElementById('pl-ex-kcal').value)||0};
-    saveDailyLog(); toast('Ejercicio guardado');
+    saveDailyLog().then(function(ok){ if(!ok){ state.dailyLog.exercise=prev; render(); } else { toast('Ejercicio guardado'); } });
   };
   document.getElementById('pl-obs').onchange=function(e){
-    state.dailyLog.obs = e.target.value; saveDailyLog(); toast('Observación guardada');
+    var prev = state.dailyLog.obs;
+    state.dailyLog.obs = e.target.value;
+    saveDailyLog().then(function(ok){ if(!ok){ state.dailyLog.obs=prev; e.target.value=prev; } else { toast('Observación guardada'); } });
   };
 }
 
@@ -571,8 +597,13 @@ function renderSemana(){
   document.getElementById('pl-body').innerHTML = html;
   Array.prototype.forEach.call(document.querySelectorAll('.pl-sel'), function(s){
     s.onchange=function(){
-      state.weekPlan[s.getAttribute('data-day')][s.getAttribute('data-meal')] = parseInt(s.value);
-      saveWeekPlan(); toast('Menú actualizado');
+      var day = s.getAttribute('data-day'), meal = s.getAttribute('data-meal');
+      var prev = state.weekPlan[day][meal];
+      state.weekPlan[day][meal] = parseInt(s.value);
+      saveWeekPlan().then(function(ok){
+        if(!ok){ state.weekPlan[day][meal]=prev; s.value=prev; }
+        else { toast('Menú actualizado'); }
+      });
     };
   });
   document.getElementById('pl-copy-week').onclick=function(){
@@ -644,7 +675,12 @@ function renderDespensa(){
   html += '</div>';
   document.getElementById('pl-body').innerHTML = html;
   Array.prototype.forEach.call(document.querySelectorAll('[data-shopkey]'), function(cb){
-    cb.onchange=function(){ state.despensaChecked[cb.getAttribute('data-shopkey')] = cb.checked; saveDespensa(); render(); };
+    cb.onchange=function(){
+      var key = cb.getAttribute('data-shopkey');
+      var prev = state.despensaChecked[key];
+      state.despensaChecked[key] = cb.checked; render();
+      saveDespensa().then(function(ok){ if(!ok){ state.despensaChecked[key]=prev; } render(); });
+    };
   });
   document.getElementById('pl-copy-shop').onclick=function(){
     var lines=['LISTA DE DESPENSA — Semana',''];
@@ -717,21 +753,36 @@ function renderSuplementos(){
 
   document.getElementById('pl-body').innerHTML = html;
   Array.prototype.forEach.call(document.querySelectorAll('[data-suppcheck]'), function(cb){
-    cb.onchange=function(){ state.dailyLog.supps[cb.getAttribute('data-suppcheck')]=cb.checked; saveDailyLog(); toast(cb.checked? 'Guardado ✓' : 'Guardado'); };
+    cb.onchange=function(){
+      var id = cb.getAttribute('data-suppcheck');
+      var prev = state.dailyLog.supps[id];
+      state.dailyLog.supps[id]=cb.checked; render();
+      saveDailyLog().then(function(ok){ if(!ok){ state.dailyLog.supps[id]=prev; } render(); if(ok) toast(cb.checked? 'Guardado ✓' : 'Guardado'); });
+    };
   });
   Array.prototype.forEach.call(document.querySelectorAll('[data-medcheck]'), function(cb){
-    cb.onchange=function(){ state.meds[parseInt(cb.getAttribute('data-medcheck'))].done=cb.checked; saveMeds(); toast(cb.checked? 'Guardado ✓' : 'Guardado'); };
+    cb.onchange=function(){
+      var idx = parseInt(cb.getAttribute('data-medcheck'));
+      var prev = state.meds[idx].done;
+      state.meds[idx].done=cb.checked; render();
+      saveMeds().then(function(ok){ if(!ok){ state.meds[idx].done=prev; } render(); if(ok) toast(cb.checked? 'Guardado ✓' : 'Guardado'); });
+    };
   });
   Array.prototype.forEach.call(document.querySelectorAll('[data-medremove]'), function(b){
-    b.onclick=function(){ state.meds.splice(parseInt(b.getAttribute('data-medremove')),1); saveMeds(); render(); };
+    b.onclick=function(){
+      var idx = parseInt(b.getAttribute('data-medremove'));
+      var removed = state.meds[idx];
+      state.meds.splice(idx,1); render();
+      saveMeds().then(function(ok){ if(!ok){ state.meds.splice(idx,0,removed); } render(); });
+    };
   });
   document.getElementById('pl-med-add').onclick=function(){
     var n=document.getElementById('pl-med-name').value.trim();
     var no=document.getElementById('pl-med-notes').value.trim();
     var mo=document.getElementById('pl-med-momento').value;
     if(!n) return;
-    state.meds.push({name:n,notes:no,momento:mo,done:false});
-    saveMeds(); render();
+    state.meds.push({name:n,notes:no,momento:mo,done:false}); render();
+    saveMeds().then(function(ok){ if(!ok){ state.meds.pop(); } render(); });
   };
 }
 
@@ -772,7 +823,12 @@ function renderConsultasCard(){
 }
 function wireConsultasCard(){
   Array.prototype.forEach.call(document.querySelectorAll('[data-antroremove]'), function(b){
-    b.onclick=function(){ state.antro.splice(parseInt(b.getAttribute('data-antroremove')),1); saveAntro(); render(); };
+    b.onclick=function(){
+      var idx = parseInt(b.getAttribute('data-antroremove'));
+      var removed = state.antro[idx];
+      state.antro.splice(idx,1); render();
+      saveAntro().then(function(ok){ if(!ok){ state.antro.splice(idx,0,removed); } render(); });
+    };
   });
   var addBtn = document.getElementById('pl-antro-add');
   if(addBtn) addBtn.onclick=function(){
@@ -780,7 +836,8 @@ function wireConsultasCard(){
     if(!d){ toast('Elige una fecha'); return; }
     var num=function(id){ var v=document.getElementById(id).value; return v===''? null: parseFloat(v); };
     state.antro.push({date:d, peso:num('pl-antro-peso'), talla:num('pl-antro-talla'), abdomen:num('pl-antro-abdomen'), cadera:num('pl-antro-cadera'), cuello:num('pl-antro-cuello')});
-    saveAntro(); toast('Consulta guardada'); render();
+    render();
+    saveAntro().then(function(ok){ if(!ok){ state.antro.pop(); render(); } else { toast('Consulta guardada'); render(); } });
   };
 }
 
