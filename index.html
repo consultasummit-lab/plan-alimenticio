@@ -577,50 +577,59 @@ function renderHoy(){
 }
 
 function renderSemana(){
-  var html = '<div class="pl-card"><h3>Menú semanal <button class="pl-btn ghost" id="pl-copy-week">Copiar para la señora</button></h3>';
-  html += '<div style="overflow-x:auto;"><table class="pl-week"><thead><tr><th>Día</th>';
-  MEAL_ORDER.forEach(function(mk){ html+='<th>'+MEALS[mk].label+'</th>'; });
-  html += '</tr></thead><tbody>';
-  DAYS.forEach(function(d){
-    html += '<tr><td>'+d+'</td>';
-    MEAL_ORDER.forEach(function(mk){
-      var sel = state.weekPlan[d][mk];
-      html += '<td><select class="pl-sel" data-day="'+d+'" data-meal="'+mk+'">';
-      MEALS[mk].options.forEach(function(o,i){
-        html += '<option value="'+i+'" '+(i===sel?'selected':'')+'>'+o.name+'</option>';
+  document.getElementById('pl-body').innerHTML = '<div class="pl-card"><p class="pl-empty">Cargando menú semanal...</p></div>';
+  fsGet('week-plan').then(function(savedPlan){
+    if(state.tab!=='semana') return;
+    state.weekPlan = savedPlan || defaultWeekPlan();
+    var html = '<div class="pl-card"><h3>Menú semanal <button class="pl-btn ghost" id="pl-copy-week">Copiar para la señora</button></h3>';
+    html += '<div style="overflow-x:auto;"><table class="pl-week"><thead><tr><th>Día</th>';
+    MEAL_ORDER.forEach(function(mk){ html+='<th>'+MEALS[mk].label+'</th>'; });
+    html += '</tr></thead><tbody>';
+    DAYS.forEach(function(d){
+      html += '<tr><td>'+d+'</td>';
+      MEAL_ORDER.forEach(function(mk){
+        var sel = state.weekPlan[d][mk];
+        html += '<td><select class="pl-sel" data-day="'+d+'" data-meal="'+mk+'">';
+        MEALS[mk].options.forEach(function(o,i){
+          html += '<option value="'+i+'" '+(i===sel?'selected':'')+'>'+o.name+'</option>';
+        });
+        html += '</select></td>';
       });
-      html += '</select></td>';
+      html += '</tr>';
     });
-    html += '</tr>';
-  });
-  html += '</tbody></table></div></div>';
-  document.getElementById('pl-body').innerHTML = html;
-  Array.prototype.forEach.call(document.querySelectorAll('.pl-sel'), function(s){
-    s.onchange=function(){
-      var day = s.getAttribute('data-day'), meal = s.getAttribute('data-meal');
-      var prev = state.weekPlan[day][meal];
-      state.weekPlan[day][meal] = parseInt(s.value);
-      saveWeekPlan().then(function(ok){
-        if(!ok){ state.weekPlan[day][meal]=prev; s.value=prev; }
-        else { toast('Menú actualizado'); }
+    html += '</tbody></table></div></div>';
+    document.getElementById('pl-body').innerHTML = html;
+    Array.prototype.forEach.call(document.querySelectorAll('.pl-sel'), function(s){
+      s.onchange=function(){
+        var day = s.getAttribute('data-day'), meal = s.getAttribute('data-meal');
+        var prev = state.weekPlan[day][meal];
+        state.weekPlan[day][meal] = parseInt(s.value);
+        saveWeekPlan().then(function(ok){
+          if(!ok){ state.weekPlan[day][meal]=prev; s.value=prev; }
+          else { toast('Menú actualizado'); }
+        });
+      };
+    });
+    document.getElementById('pl-copy-week').onclick=function(){
+      toast('Verificando el menú guardado...');
+      fsGet('week-plan').then(function(savedPlan2){
+        var plan = savedPlan2 || state.weekPlan;
+        var lines=['MENÚ DE LA SEMANA — Javier Cruz',''];
+        DAYS.forEach(function(d){
+          lines.push(d.toUpperCase());
+          ['desayuno','comida','cena'].forEach(function(mk){
+            var opt = mealOption(mk, plan[d][mk]);
+            lines.push('  '+MEALS[mk].label+': '+opt.name);
+            opt.desc.forEach(function(x){ lines.push('    - '+x); });
+          });
+          lines.push('');
+        });
+        var text = lines.join('\n');
+        if(navigator.clipboard){ navigator.clipboard.writeText(text).then(function(){ toast('Resumen copiado (versión guardada) — pégalo en WhatsApp'); }); }
+        else { toast('No se pudo copiar automáticamente'); }
       });
     };
   });
-  document.getElementById('pl-copy-week').onclick=function(){
-    var lines=['MENÚ DE LA SEMANA — Javier Cruz',''];
-    DAYS.forEach(function(d){
-      lines.push(d.toUpperCase());
-      ['desayuno','comida','cena'].forEach(function(mk){
-        var opt = mealOption(mk, state.weekPlan[d][mk]);
-        lines.push('  '+MEALS[mk].label+': '+opt.name);
-        opt.desc.forEach(function(x){ lines.push('    - '+x); });
-      });
-      lines.push('');
-    });
-    var text = lines.join('\n');
-    if(navigator.clipboard){ navigator.clipboard.writeText(text).then(function(){ toast('Resumen copiado — pégalo en WhatsApp'); }); }
-    else { toast('No se pudo copiar automáticamente'); }
-  };
 }
 
 var DEPTS = {
@@ -638,61 +647,67 @@ function deptOf(name){
 var OMIT_FROM_SHOP = ['Creatina monohidratada','Proteína vegetal Birdman'];
 
 function renderDespensa(){
-  var totals = {};
-  DAYS.forEach(function(d){
-    MEAL_ORDER.forEach(function(mk){
-      var opt = mealOption(mk, state.weekPlan[d][mk]);
-      (opt.ing||[]).forEach(function(ing){
-        if(OMIT_FROM_SHOP.indexOf(ing.n)!==-1) return;
-        var key = ing.n+'|'+ing.u;
-        if(!totals[key]) totals[key]={n:ing.n,u:ing.u,q:0};
-        totals[key].q += ing.q;
+  document.getElementById('pl-body').innerHTML = '<div class="pl-card"><p class="pl-empty">Cargando lista de despensa...</p></div>';
+  fsGet('week-plan').then(function(savedPlan){
+    if(state.tab!=='despensa') return;
+    var plan = savedPlan || defaultWeekPlan();
+    state.weekPlan = plan;
+    var totals = {};
+    DAYS.forEach(function(d){
+      MEAL_ORDER.forEach(function(mk){
+        var opt = mealOption(mk, plan[d][mk]);
+        (opt.ing||[]).forEach(function(ing){
+          if(OMIT_FROM_SHOP.indexOf(ing.n)!==-1) return;
+          var key = ing.n+'|'+ing.u;
+          if(!totals[key]) totals[key]={n:ing.n,u:ing.u,q:0};
+          totals[key].q += ing.q;
+        });
       });
     });
-  });
-  var grouped = {};
-  Object.keys(totals).forEach(function(k){
-    var it = totals[k];
-    var dept = deptOf(it.n);
-    if(!grouped[dept]) grouped[dept]=[];
-    grouped[dept].push(it);
-  });
-  Object.keys(grouped).forEach(function(d){ grouped[d].sort(function(a,b){return a.n.localeCompare(b.n);}); });
-
-  var html = '<div class="pl-card"><h3>Lista de despensa semanal <button class="pl-btn ghost" id="pl-copy-shop">Copiar lista</button></h3>';
-  html += '<p style="font-size:12px;color:#6b6b64;margin-bottom:10px;">Calculada según las opciones elegidas en Semana, organizada por departamento. No incluye suplementos, medicamentos, alimentos libres (especias, café, limón para condimentar, etc.) ni cantidades "al gusto".</p>';
-  DEPT_ORDER.forEach(function(dept){
-    if(!grouped[dept] || grouped[dept].length===0) return;
-    html += '<h4 style="font-size:13px;margin:14px 0 6px;color:var(--pl-green);">'+dept+'</h4><ul id="pl-shop">';
-    grouped[dept].forEach(function(it){
-      var key = it.n+'|'+it.u;
-      var checked = state.despensaChecked[key];
-      var qty = (Math.round(it.q*100)/100);
-      html += '<li class="'+(checked?'done':'')+'"><input type="checkbox" class="pl-check" data-shopkey="'+key+'" '+(checked?'checked':'')+'><span class="mono">'+qty+' '+it.u+'</span> — <span>'+it.n+'</span></li>';
+    var grouped = {};
+    Object.keys(totals).forEach(function(k){
+      var it = totals[k];
+      var dept = deptOf(it.n);
+      if(!grouped[dept]) grouped[dept]=[];
+      grouped[dept].push(it);
     });
-    html += '</ul>';
-  });
-  html += '</div>';
-  document.getElementById('pl-body').innerHTML = html;
-  Array.prototype.forEach.call(document.querySelectorAll('[data-shopkey]'), function(cb){
-    cb.onchange=function(){
-      var key = cb.getAttribute('data-shopkey');
-      var prev = state.despensaChecked[key];
-      state.despensaChecked[key] = cb.checked; render();
-      saveDespensa().then(function(ok){ if(!ok){ state.despensaChecked[key]=prev; } render(); });
-    };
-  });
-  document.getElementById('pl-copy-shop').onclick=function(){
-    var lines=['LISTA DE DESPENSA — Semana',''];
+    Object.keys(grouped).forEach(function(d){ grouped[d].sort(function(a,b){return a.n.localeCompare(b.n);}); });
+
+    var html = '<div class="pl-card"><h3>Lista de despensa semanal <button class="pl-btn ghost" id="pl-copy-shop">Copiar lista</button></h3>';
+    html += '<p style="font-size:12px;color:#6b6b64;margin-bottom:10px;">Calculada según las opciones guardadas en Semana, organizada por departamento. No incluye suplementos, medicamentos, alimentos libres (especias, café, limón para condimentar, etc.) ni cantidades "al gusto".</p>';
     DEPT_ORDER.forEach(function(dept){
       if(!grouped[dept] || grouped[dept].length===0) return;
-      lines.push(dept.toUpperCase());
-      grouped[dept].forEach(function(it){ lines.push('  - '+(Math.round(it.q*100)/100)+' '+it.u+' de '+it.n); });
-      lines.push('');
+      html += '<h4 style="font-size:13px;margin:14px 0 6px;color:var(--pl-green);">'+dept+'</h4><ul id="pl-shop">';
+      grouped[dept].forEach(function(it){
+        var key = it.n+'|'+it.u;
+        var checked = state.despensaChecked[key];
+        var qty = (Math.round(it.q*100)/100);
+        html += '<li class="'+(checked?'done':'')+'"><input type="checkbox" class="pl-check" data-shopkey="'+key+'" '+(checked?'checked':'')+'><span class="mono">'+qty+' '+it.u+'</span> — <span>'+it.n+'</span></li>';
+      });
+      html += '</ul>';
     });
-    var text = lines.join('\n');
-    if(navigator.clipboard){ navigator.clipboard.writeText(text).then(function(){ toast('Lista copiada'); }); }
-  };
+    html += '</div>';
+    document.getElementById('pl-body').innerHTML = html;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-shopkey]'), function(cb){
+      cb.onchange=function(){
+        var key = cb.getAttribute('data-shopkey');
+        var prev = state.despensaChecked[key];
+        state.despensaChecked[key] = cb.checked; render();
+        saveDespensa().then(function(ok){ if(!ok){ state.despensaChecked[key]=prev; } render(); });
+      };
+    });
+    document.getElementById('pl-copy-shop').onclick=function(){
+      var lines=['LISTA DE DESPENSA — Semana',''];
+      DEPT_ORDER.forEach(function(dept){
+        if(!grouped[dept] || grouped[dept].length===0) return;
+        lines.push(dept.toUpperCase());
+        grouped[dept].forEach(function(it){ lines.push('  - '+(Math.round(it.q*100)/100)+' '+it.u+' de '+it.n); });
+        lines.push('');
+      });
+      var text = lines.join('\n');
+      if(navigator.clipboard){ navigator.clipboard.writeText(text).then(function(){ toast('Lista copiada'); }); }
+    };
+  });
 }
 
 var CAT_COLORS = {verd:'var(--pl-verd)',frut:'var(--pl-frut)',cer:'var(--pl-cer)',cerg:'var(--pl-cerg)',leg:'var(--pl-leg)',aoa:'var(--pl-aoa)',lac:'var(--pl-lac)',gra:'var(--pl-gra)',azu:'var(--pl-azu)'};
