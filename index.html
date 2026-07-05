@@ -109,7 +109,13 @@ var MEALS = {
       {name:'Melón + creatina', desc:['2 tazas de melón picado (280 g)','5 g de creatina monohidratada disuelta en 1 vaso de agua'],
         ing:[{n:'Melón',q:2,u:'taza'},{n:'Creatina monohidratada',q:5,u:'g'}]},
       {name:'Mango/fresa + creatina', desc:['1 taza de mango picado o 2 tazas de fresa picada','5 g de creatina monohidratada disuelta en 1 vaso de agua'],
-        ing:[{n:'Mango',q:1,u:'taza'},{n:'Creatina monohidratada',q:5,u:'g'}]}
+        ing:[{n:'Mango',q:1,u:'taza'},{n:'Creatina monohidratada',q:5,u:'g'}]},
+      {name:'Papaya + creatina', desc:['2 tazas de papaya picada (280 g)','5 g de creatina monohidratada disuelta en 1 vaso de agua'],
+        ing:[{n:'Papaya',q:2,u:'taza'},{n:'Creatina monohidratada',q:5,u:'g'}]},
+      {name:'Kiwi + mandarina + creatina', desc:['2 kiwis + 1 mandarina','5 g de creatina monohidratada disuelta en 1 vaso de agua'],
+        ing:[{n:'Kiwi',q:2,u:'pza'},{n:'Mandarina',q:1,u:'pza'},{n:'Creatina monohidratada',q:5,u:'g'}]},
+      {name:'Uvas/guayaba + creatina', desc:['2 tazas de uvas o 4 guayabas','5 g de creatina monohidratada disuelta en 1 vaso de agua'],
+        ing:[{n:'Uvas',q:2,u:'taza'},{n:'Creatina monohidratada',q:5,u:'g'}]}
     ]},
   postworkout:{label:'Post-Workout', need:'3 Proteína muy baja en grasa',
     options:[
@@ -123,7 +129,13 @@ var MEALS = {
       {name:'Jugo verde + avo toast con huevo y jamón', desc:['Vaso de jugo verde','2 rebanadas de pan Bimbo cero cero tostado','¼ de aguacate machacado con cebolla','80 g pechuga de pavo','2 huevos estrellados con 5 disparos de PAM','¼ pepino en rodajas + arúgula al gusto','1 taza de café negro'],
         ing:[{n:'Espinaca fresca',q:1,u:'taza'},{n:'Pepino',q:0.75,u:'pza'},{n:'Apio',q:1,u:'tallo'},{n:'Perejil',q:0.25,u:'taza'},{n:'Limón',q:1,u:'pza'},{n:'Pan Bimbo cero cero',q:2,u:'reb'},{n:'Aguacate',q:0.25,u:'pza'},{n:'Cebolla',q:0.1,u:'pza'},{n:'Pechuga de pavo',q:80,u:'g'},{n:'Huevo',q:2,u:'pza'},{n:'Arúgula',q:1,u:'puñado'}]},
       {name:'Jugo verde + chilaquiles light con pollo y huevo', desc:['Vaso de jugo verde','40 g totopos horneados Susalia','1 taza salsa roja o verde (casera, sin aceite)','60 g pechuga de pollo deshebrada','2 huevos estrellados con 5 disparos de PAM','Lechuga y cebollita picada','¼ de aguacate (30 g) o 1 cda de crema light','1 taza de café negro'],
-        ing:[{n:'Espinaca fresca',q:1,u:'taza'},{n:'Pepino',q:0.5,u:'pza'},{n:'Apio',q:1,u:'tallo'},{n:'Perejil',q:0.25,u:'taza'},{n:'Limón',q:1,u:'pza'},{n:'Totopos horneados Susalia',q:40,u:'g'},{n:'Jitomate (salsa)',q:1,u:'taza'},{n:'Pechuga de pollo',q:60,u:'g'},{n:'Huevo',q:2,u:'pza'},{n:'Lechuga',q:1,u:'puñado'},{n:'Cebollita',q:1,u:'pza'},{n:'Aguacate',q:30,u:'g'}]}
+        ing:[{n:'Espinaca fresca',q:1,u:'taza'},{n:'Pepino',q:0.5,u:'pza'},{n:'Apio',q:1,u:'tallo'},{n:'Perejil',q:0.25,u:'taza'},{n:'Limón',q:1,u:'pza'},{n:'Totopos horneados Susalia',q:40,u:'g'},{n:'Jitomate (salsa)',q:1,u:'taza'},{n:'Pechuga de pollo',q:60,u:'g'},{n:'Huevo',q:2,u:'pza'},{n:'Lechuga',q:1,u:'puñado'},{n:'Cebollita',q:1,u:'pza'},{n:'Aguacate',q:30,u:'g'}]},
+      {name:'Jugo verde + molletes con tocino de pavo y pico de gallo', desc:['Vaso de jugo verde (con acelga, jengibre y cúrcuma)','1 bolillo integral sin migajón','4 cdas de frijoles machacados','2 reb de queso manchego o mozzarella light','2 reb de tocino de pavo o 80 g pechuga de pavo','½ aguacate (60 g) o 2 cdas crema light (30 g)','Abundante pico de gallo','1 taza de café negro'],
+        ing:[{n:'Espinaca fresca',q:1,u:'taza'},{n:'Acelga',q:1,u:'taza'},{n:'Pepino',q:0.5,u:'pza'},{n:'Apio',q:1,u:'tallo'},{n:'Perejil',q:0.25,u:'taza'},{n:'Jengibre',q:1,u:'pedacito'},{n:'Limón',q:1,u:'pza'},{n:'Cúrcuma en polvo',q:1,u:'cdita'},{n:'Bolillo integral sin migajón',q:1,u:'pza'},{n:'Frijoles cocidos',q:4,u:'cda'},{n:'Queso manchego light',q:2,u:'reb'},{n:'Tocino de pavo',q:2,u:'reb'},{n:'Aguacate',q:60,u:'g'},{n:'Jitomate (pico de gallo)',q:1,u:'pza'}]},
+      {name:'Jugo verde + omelette de espinaca con jamón y frijoles', desc:['Vaso de jugo verde (con acelga, jengibre y cúrcuma)','1 cdita aceite de canola u oliva (5 g) o 5 disparos de PAM','2 huevos batidos con sal y pimienta','¼ cebolla picadita + espinaca al gusto','80 g pechuga de pavo','¼ de aguacate (30 g)','Salsa al gusto','2 tortillas de maíz','1/3 taza de frijoles machacados (90 g)','1 taza de café negro'],
+        ing:[{n:'Espinaca fresca',q:1,u:'taza'},{n:'Acelga',q:1,u:'taza'},{n:'Pepino',q:0.5,u:'pza'},{n:'Apio',q:1,u:'tallo'},{n:'Perejil',q:0.25,u:'taza'},{n:'Jengibre',q:1,u:'pedacito'},{n:'Limón',q:1,u:'pza'},{n:'Cúrcuma en polvo',q:1,u:'cdita'},{n:'Aceite de canola u oliva',q:1,u:'cdita'},{n:'Huevo',q:2,u:'pza'},{n:'Cebolla',q:0.25,u:'pza'},{n:'Espinaca (picada)',q:0.5,u:'taza'},{n:'Pechuga de pavo',q:80,u:'g'},{n:'Aguacate',q:30,u:'g'},{n:'Tortilla de maíz',q:2,u:'pza'},{n:'Frijoles cocidos',q:0.33,u:'taza'}]},
+      {name:'Jugo verde + torta de huevo con jamón', desc:['Vaso de jugo verde (con acelga, jengibre y cúrcuma)','1 cdita aceite de canola u oliva (5 g) o 5 disparos de PAM','1 huevo batido con sal y pimienta + ¼ cebolla picadita + 80 g pechuga de pavo','1 bolillo integral sin migajón','1 cdita mayonesa (5 g) + 1 cda mostaza','1 reb de queso manchego o mozzarella light','2 rodajas de jitomate + 3 hojas de lechuga + 3 de espinaca','Chipotle y rajitas (opcional)','1 taza de café negro'],
+        ing:[{n:'Espinaca fresca',q:1,u:'taza'},{n:'Acelga',q:1,u:'taza'},{n:'Pepino',q:0.5,u:'pza'},{n:'Apio',q:1,u:'tallo'},{n:'Perejil',q:0.25,u:'taza'},{n:'Jengibre',q:1,u:'pedacito'},{n:'Limón',q:1,u:'pza'},{n:'Cúrcuma en polvo',q:1,u:'cdita'},{n:'Aceite de canola u oliva',q:1,u:'cdita'},{n:'Huevo',q:1,u:'pza'},{n:'Cebolla',q:0.25,u:'pza'},{n:'Pechuga de pavo',q:80,u:'g'},{n:'Bolillo integral sin migajón',q:1,u:'pza'},{n:'Mayonesa',q:1,u:'cdita'},{n:'Queso manchego light',q:1,u:'reb'},{n:'Jitomate',q:0.5,u:'pza'},{n:'Lechuga',q:1,u:'puñado'},{n:'Espinaca (picada)',q:0.5,u:'taza'}]}
     ]},
   comida:{label:'Comida', need:'3 Verduras + 2 Grasas + 6 Proteína + 3 Cereales',
     options:[
@@ -132,7 +144,13 @@ var MEALS = {
       {name:'Pescado o salmón con arroz y ensalada', desc:['200 g filete de pescado o 180 g salmón asado + 1 cdita aceite de oliva','1 taza de arroz integral (200 g)','Ensalada: lechuga, acelga, espinaca, jitomate, pepino, pimiento','40 g de queso panela picado + ¼ de aguacate','Aderezo miel-mostaza: vinagre de manzana, miel sin azúcar, mostaza, limón, sal y pimienta'],
         ing:[{n:'Filete de pescado o salmón',q:200,u:'g'},{n:'Aceite de oliva',q:1,u:'cdita'},{n:'Arroz integral',q:1,u:'taza'},{n:'Mix de verduras (lechuga, acelga, espinaca, jitomate, pepino, pimiento)',q:1,u:'taza'},{n:'Queso panela',q:40,u:'g'},{n:'Aguacate',q:30,u:'g'},{n:'Miel sin azúcar',q:1,u:'cdita'},{n:'Mostaza',q:1,u:'cdita'},{n:'Limón',q:1,u:'pza'}]},
       {name:'Tostadas de salpicón', desc:['180 g falda de res cocida y deshebrada (1.5 taza)','Jitomate, lechuga romana, chile jalapeño, perejil, ajo, cebolla morada picaditos','½ taza elote desgranado o ½ papa cocida picada','1 cdita aceite de oliva + limón + sal y pimienta','¼ de aguacate (30 g)','4 tostadas horneadas Susalia o Salmas (o 8 galletas habaneras)'],
-        ing:[{n:'Falda de res',q:180,u:'g'},{n:'Jitomate',q:1,u:'pza'},{n:'Lechuga romana',q:1,u:'puñado'},{n:'Chile jalapeño',q:1,u:'pza'},{n:'Cebolla morada',q:0.25,u:'pza'},{n:'Elote desgranado',q:0.5,u:'taza'},{n:'Aceite de oliva',q:1,u:'cdita'},{n:'Limón',q:1,u:'pza'},{n:'Aguacate',q:30,u:'g'},{n:'Tostadas horneadas Susalia',q:4,u:'pza'}]}
+        ing:[{n:'Falda de res',q:180,u:'g'},{n:'Jitomate',q:1,u:'pza'},{n:'Lechuga romana',q:1,u:'puñado'},{n:'Chile jalapeño',q:1,u:'pza'},{n:'Cebolla morada',q:0.25,u:'pza'},{n:'Elote desgranado',q:0.5,u:'taza'},{n:'Aceite de oliva',q:1,u:'cdita'},{n:'Limón',q:1,u:'pza'},{n:'Aguacate',q:30,u:'g'},{n:'Tostadas horneadas Susalia',q:4,u:'pza'}]},
+      {name:'Fajitas de pollo', desc:['1 cdita aceite vegetal o 5 disparos de PAM','180 g pechuga de pollo','1 taza mix de pimiento morrón de colores','¼ taza cebolla','¼ de aguacate (30 g)','Acompañar con 2 tortillas de maíz y salsa al gusto'],
+        ing:[{n:'Aceite vegetal',q:1,u:'cdita'},{n:'Pechuga de pollo',q:180,u:'g'},{n:'Pimiento morrón',q:1,u:'taza'},{n:'Cebolla',q:0.25,u:'taza'},{n:'Aguacate',q:30,u:'g'},{n:'Tortilla de maíz',q:2,u:'pza'}]},
+      {name:'Pescado, salmón o atún con ensalada de ejotes', desc:['240 g filete de pescado o 210 g salmón o 180 g medallón de atún asado con 5 disparos de PAM','Ensalada: 1 papa cocida en cubitos, 1 taza de ejotes cocidos picados, ¼ taza zanahoria cocida picada, jitomate y cebolla fileteados','1 cdita de aceite de oliva + vinagre balsámico + sal (se puede cambiar la papa por 1 taza de pasta integral cocida)'],
+        ing:[{n:'Filete de pescado o salmón',q:240,u:'g'},{n:'Papa',q:1,u:'pza'},{n:'Ejotes',q:1,u:'taza'},{n:'Zanahoria',q:0.25,u:'taza'},{n:'Jitomate',q:1,u:'pza'},{n:'Cebolla',q:0.25,u:'pza'},{n:'Aceite de oliva',q:1,u:'cdita'}]},
+      {name:'Yakimeshi de res', desc:['1 cdita aceite vegetal o 5 disparos de PAM','1 calabaza italiana pequeña + ¼ taza cebolla + ½ zanahoria picada + 1 diente de ajo','150 g carne de res molida','2 claras de huevo','1/3 taza de chícharos, edamames o garbanzos cocidos','2/3 taza arroz integral (130 g) o ½ taza arroz blanco (100 g)','¼ de aguacate en cubos (30 g)','Acompañar con soya reducida en sodio y jalapeños (opcional)'],
+        ing:[{n:'Aceite vegetal',q:1,u:'cdita'},{n:'Calabaza italiana',q:1,u:'pza'},{n:'Cebolla',q:0.25,u:'taza'},{n:'Zanahoria',q:0.5,u:'pza'},{n:'Ajo',q:1,u:'diente'},{n:'Carne de res molida',q:150,u:'g'},{n:'Clara de huevo',q:2,u:'pza'},{n:'Chícharos o edamames o garbanzos cocidos',q:0.33,u:'taza'},{n:'Arroz integral',q:0.67,u:'taza'},{n:'Aguacate',q:30,u:'g'}]}
     ]},
   snack:{label:'Colación', need:'1 Fruta + 1 Grasa con proteína + 1 Lácteo light + 1 Cereal sin grasa',
     options:[
@@ -141,7 +159,13 @@ var MEALS = {
       {name:'Manzana canela bowl', desc:['1 manzana gala picada','½ taza yogurt griego natural sin azúcar','⅓ taza hojuelas de avena o 1 sobre avena instantánea','1 cda linaza molida + canela'],
         ing:[{n:'Manzana gala',q:1,u:'pza'},{n:'Yogurt griego natural sin azúcar',q:0.5,u:'taza'},{n:'Hojuelas de avena',q:0.33,u:'taza'},{n:'Linaza molida',q:1,u:'cda'}]},
       {name:'Smoothie de fresa + brownie/barrita', desc:['1 taza fresas picadas','1 taza leche deslactosada light','10 almendras + hielos, licuar','Acompañar con 1 brownie o barrita Fiber One o 5 galletas María'],
-        ing:[{n:'Fresas',q:1,u:'taza'},{n:'Leche deslactosada light',q:1,u:'taza'},{n:'Almendras',q:10,u:'pza'},{n:'Brownie/barrita Fiber One',q:1,u:'pza'}]}
+        ing:[{n:'Fresas',q:1,u:'taza'},{n:'Leche deslactosada light',q:1,u:'taza'},{n:'Almendras',q:10,u:'pza'},{n:'Brownie/barrita Fiber One',q:1,u:'pza'}]},
+      {name:'Fresas con crema + brownie', desc:['1 taza de fresas picadas + 10 almendras','Licuar: 100 g de queso cottage 1% + 2 cditas esencia de vainilla + splenda o stevia (opcional) + 2 cdas de leche light o de almendras sin azúcar','Acompaña con 1 brownie o barrita Fiber One o 5 galletas María'],
+        ing:[{n:'Fresas',q:1,u:'taza'},{n:'Almendras',q:10,u:'pza'},{n:'Queso cottage 1%',q:100,u:'g'},{n:'Leche light o de almendras sin azúcar',q:2,u:'cda'},{n:'Brownie/barrita Fiber One',q:1,u:'pza'}]},
+      {name:'Bowl de fruta', desc:['1 taza de papaya picada','½ taza o 1 pieza individual de yogurt griego sin azúcar','1 cda de linaza molida','3 cdas de granola sin azúcar o 1/3 taza de cereal sin azúcar'],
+        ing:[{n:'Papaya',q:1,u:'taza'},{n:'Yogurt griego natural sin azúcar',q:0.5,u:'taza'},{n:'Linaza molida',q:1,u:'cda'},{n:'Granola sin azúcar',q:3,u:'cda'}]},
+      {name:'Toast de peanut con plátano + capuchino vainilla', desc:['2 rice cakes o 1 reb de pan integral tostado','2 cditas de crema de cacahuate sin azúcar','½ plátano en rodajas','1 taza de leche deslactosada light + 1 cda o shot de café','1 cda de esencia de vainilla y canela al gusto'],
+        ing:[{n:'Rice cakes',q:2,u:'pza'},{n:'Crema de cacahuate sin azúcar',q:2,u:'cdita'},{n:'Plátano',q:0.5,u:'pza'},{n:'Leche deslactosada light',q:1,u:'taza'}]}
     ]},
   cena:{label:'Cena', need:'2 Verduras + 4 Proteína + 2 Grasas + 2 Cereales',
     options:[
@@ -150,7 +174,13 @@ var MEALS = {
       {name:'Tacos de bistec', desc:['1 cdita aceite de oliva + ¼ cebolla + 1 taza pimiento morrón picado','120 g bistec de res picado, sal y pimienta','¼ de aguacate (30 g) o 2 cdas guacamole','2 tortillas de maíz o 4 de nopal Susalia','Limón y salsa al gusto · 1 taza de té verde'],
         ing:[{n:'Aceite de oliva',q:1,u:'cdita'},{n:'Cebolla',q:0.25,u:'pza'},{n:'Pimiento morrón',q:1,u:'taza'},{n:'Bistec de res',q:120,u:'g'},{n:'Aguacate',q:30,u:'g'},{n:'Tortilla de maíz',q:2,u:'pza'},{n:'Limón',q:1,u:'pza'}]},
       {name:'Wrap de pollo con panela', desc:['1 pan pita taquero (libanius)','90 g pechuga de pollo deshebrada (¾ taza)','40 g queso panela (1 reb)','Lechuga, jitomate, espinaca, rajitas (opcional)','1 cdita mayonesa + ¼ aguacate rebanado (30 g) + mostaza opcional','1 taza de té verde'],
-        ing:[{n:'Pan pita taquero',q:1,u:'pza'},{n:'Pechuga de pollo',q:90,u:'g'},{n:'Queso panela',q:40,u:'g'},{n:'Lechuga',q:1,u:'puñado'},{n:'Jitomate',q:0.5,u:'pza'},{n:'Espinaca',q:0.5,u:'taza'},{n:'Mayonesa',q:1,u:'cdita'},{n:'Aguacate',q:30,u:'g'}]}
+        ing:[{n:'Pan pita taquero',q:1,u:'pza'},{n:'Pechuga de pollo',q:90,u:'g'},{n:'Queso panela',q:40,u:'g'},{n:'Lechuga',q:1,u:'puñado'},{n:'Jitomate',q:0.5,u:'pza'},{n:'Espinaca',q:0.5,u:'taza'},{n:'Mayonesa',q:1,u:'cdita'},{n:'Aguacate',q:30,u:'g'}]},
+      {name:'Hamburguesa de atún', desc:['1 par de pan thins','1 cdita mayonesa (5 g) + 1 cda mostaza','1 medallón de atún asado sin aceite o 2 disparos de PAM','40 g queso panela','2 rodajas de jitomate + 3 hojas de lechuga','¼ de aguacate (30 g)','Chipotle o rajitas (opcional)','1 taza de té verde · cenar al menos 2 h antes de dormir'],
+        ing:[{n:'Pan thins',q:1,u:'par'},{n:'Mayonesa',q:1,u:'cdita'},{n:'Medallón de atún',q:1,u:'pza'},{n:'Queso panela',q:40,u:'g'},{n:'Jitomate',q:0.5,u:'pza'},{n:'Lechuga',q:1,u:'puñado'},{n:'Aguacate',q:30,u:'g'}]},
+      {name:'Champiqueso con guacamole', desc:['2 tortillas de maíz o 6 chiquitas o 4 de nopal Susalia','90 g queso Oaxaca light o 120 g queso panela','1 taza champiñones picados + ¼ cebolla picadita','2 cdas de soya reducida en sodio','Guacamole: ½ jitomate + ¼ cebolla + ½ aguacate machacado (60 g) + sal','1 taza de té verde · cenar al menos 2 h antes de dormir'],
+        ing:[{n:'Tortilla de maíz',q:2,u:'pza'},{n:'Queso Oaxaca light',q:90,u:'g'},{n:'Champiñones',q:1,u:'taza'},{n:'Cebolla',q:0.25,u:'pza'},{n:'Jitomate',q:0.5,u:'pza'},{n:'Aguacate',q:60,u:'g'}]},
+      {name:'Club sándwich', desc:['2 reb de pan integral (Bimbo cero cero)','1 cdita mayonesa (5 g) + 1 cda mostaza','60 g pechuga de pollo cocida y deshebrada','1 reb de tocino de pavo + 1 reb de queso manchego light','¼ de aguacate (30 g) + 2 rodajas de jitomate + 3 hojas de lechuga','Chipotle o rajitas (opcional)','1 taza de té verde · cenar al menos 2 h antes de dormir'],
+        ing:[{n:'Pan Bimbo cero cero',q:2,u:'reb'},{n:'Mayonesa',q:1,u:'cdita'},{n:'Pechuga de pollo',q:60,u:'g'},{n:'Tocino de pavo',q:1,u:'reb'},{n:'Queso manchego light',q:1,u:'reb'},{n:'Aguacate',q:30,u:'g'},{n:'Jitomate',q:0.5,u:'pza'},{n:'Lechuga',q:1,u:'puñado'}]}
     ]}
 };
 
@@ -346,10 +376,16 @@ async function fsSet(id, payload){
   }
 }
 
-function todayKey(d){ d=d||new Date(); return d.toISOString().slice(0,10); }
+function todayKey(d){
+  d = d || new Date();
+  var y = d.getFullYear();
+  var m = ('0'+(d.getMonth()+1)).slice(-2);
+  var day = ('0'+d.getDate()).slice(-2);
+  return y+'-'+m+'-'+day;
+}
 function dayIndex(d){ d=d||new Date(); var j=d.getDay(); return j===0?6:j-1; }
 
-var state = { weekPlan:null, dailyLog:null, despensaChecked:{}, meds:[], antro:null, nextAppt:null, tab:'hoy', date:new Date() };
+var state = { weekPlan:null, dailyLog:null, despensaChecked:{}, meds:[], antro:null, nextAppt:null, tab:'hoy', date:new Date(), localDayFinalized:false };
 
 function defaultWeekPlan(){
   var wp={};
@@ -482,6 +518,13 @@ function renderNav(){
 function mealOption(mealKey, idx){ return MEALS[mealKey].options[idx % MEALS[mealKey].options.length]; }
 
 function renderHoy(){
+  if(state.localDayFinalized){
+    document.getElementById('pl-body').innerHTML = '<div class="pl-card"><h3>Día finalizado ✓</h3>'+
+      '<p style="font-size:13px;color:#6b6b64;">Ya cerraste tu registro de hoy. Tu información quedó guardada — esta vista se reiniciará sola mañana con un checklist en blanco.</p>'+
+      '<button class="pl-btn ghost" id="pl-undo-finalize">Aún no, seguir editando hoy</button></div>';
+    document.getElementById('pl-undo-finalize').onclick=function(){ state.localDayFinalized=false; render(); };
+    return;
+  }
   var day = DAYS[dayIndex(state.date)];
   var plan = state.weekPlan[day];
   var html = '<div class="pl-card"><h3>'+day+' · '+todayKey(state.date)+'<span class="pl-badge" style="background:var(--pl-green-l);color:var(--pl-green);">'+
@@ -506,6 +549,7 @@ function renderHoy(){
   var bpCount7 = 0;
   html += '<div class="pl-card"><h3>Presión arterial <span class="pl-badge" style="background:var(--pl-frut-l);color:var(--pl-frut);">meta: 3x/semana</span></h3>';
   html += '<div class="pl-row" style="gap:8px;flex-wrap:wrap;">'+
+    '<select class="pl-text" id="pl-bp-arm" style="max-width:130px;"><option value="izquierdo">Brazo izquierdo</option><option value="derecho">Brazo derecho</option></select>'+
     '<input class="pl-text" id="pl-bp-sys" type="number" placeholder="Sistólica" style="max-width:110px;">'+
     '<input class="pl-text" id="pl-bp-dia" type="number" placeholder="Diastólica" style="max-width:110px;">'+
     '<input class="pl-text" id="pl-bp-pulse" type="number" placeholder="Pulso" style="max-width:100px;">'+
@@ -514,7 +558,8 @@ function renderHoy(){
   else {
     html += '<ul style="list-style:none;padding:0;margin:10px 0 0;">';
     state.dailyLog.bp.forEach(function(b,i){
-      html += '<li style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--pl-line);"><span class="mono">'+b.time+'</span><span>'+b.sys+'/'+b.dia+' mmHg · '+b.pulse+' lpm</span><button class="pl-btn ghost" data-bpremove="'+i+'" style="padding:2px 8px;">Quitar</button></li>';
+      var armLabel = b.arm==='derecho' ? 'Brazo derecho' : 'Brazo izquierdo';
+      html += '<li style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--pl-line);"><span class="mono">'+b.time+'</span><span>'+b.sys+'/'+b.dia+' mmHg · '+b.pulse+' lpm · '+armLabel+'</span><button class="pl-btn ghost" data-bpremove="'+i+'" style="padding:2px 8px;">Quitar</button></li>';
     });
     html += '</ul>';
   }
@@ -527,6 +572,11 @@ function renderHoy(){
 
   html += '<div class="pl-card"><h3>Observaciones del día</h3>'+
     '<textarea id="pl-obs" class="pl-text" rows="3" placeholder="Situaciones extraordinarias: antojos, salidas, malestar, cambios de horario, etc.">'+(state.dailyLog.obs||'')+'</textarea></div>';
+
+  html += '<div class="pl-card" style="text-align:center;">'+
+    '<h3 style="justify-content:center;">Terminar el día</h3>'+
+    '<p style="font-size:12px;color:#6b6b64;margin-bottom:10px;">Todo se va guardando solo, pero puedes cerrar tu día aquí para dejarlo limpio en pantalla hasta mañana.</p>'+
+    '<button class="pl-btn" id="pl-finalize-day">Finalizar día de hoy</button></div>';
 
   document.getElementById('pl-body').innerHTML = html;
 
@@ -550,10 +600,11 @@ function renderHoy(){
     var sys=document.getElementById('pl-bp-sys').value;
     var dia=document.getElementById('pl-bp-dia').value;
     var pulse=document.getElementById('pl-bp-pulse').value;
+    var arm=document.getElementById('pl-bp-arm').value;
     if(!sys || !dia || !pulse){ toast('Completa sistólica, diastólica y pulso'); return; }
     var now=new Date();
     var time=('0'+now.getHours()).slice(-2)+':'+('0'+now.getMinutes()).slice(-2);
-    state.dailyLog.bp.push({time:time, sys:sys, dia:dia, pulse:pulse}); render();
+    state.dailyLog.bp.push({time:time, sys:sys, dia:dia, pulse:pulse, arm:arm}); render();
     saveDailyLog().then(function(ok){ if(!ok){ state.dailyLog.bp.pop(); } render(); });
   };
   Array.prototype.forEach.call(document.querySelectorAll('[data-bpremove]'), function(b){
@@ -573,6 +624,13 @@ function renderHoy(){
     var prev = state.dailyLog.obs;
     state.dailyLog.obs = e.target.value;
     saveDailyLog().then(function(ok){ if(!ok){ state.dailyLog.obs=prev; e.target.value=prev; } else { toast('Observación guardada'); } });
+  };
+  document.getElementById('pl-finalize-day').onclick=function(){
+    if(!confirm('¿Confirmas que terminaste de registrar el día de hoy? Tu información queda guardada tal cual; solo se ocultará de la pantalla hasta mañana.')) return;
+    saveDailyLog().then(function(ok){
+      if(ok){ state.localDayFinalized = true; toast('Día guardado y finalizado'); render(); }
+      else { toast('No se pudo confirmar el guardado — intenta de nuevo'); }
+    });
   };
 }
 
@@ -633,11 +691,11 @@ function renderSemana(){
 }
 
 var DEPTS = {
-  'Frutas y Verduras': ['Aguacate','Apio','Arúgula','Cebolla morada','Cebolla','Cebollita','Chile jalapeño','Elote desgranado','Espinaca (picada)','Espinaca fresca','Espinaca','Fresas','Jitomate (salsa)','Jitomate','Lechuga romana','Lechuga','Limón','Mango','Manzana gala','Melón','Mix de verduras (lechuga, acelga, espinaca, jitomate, pepino, pimiento)','Pepino','Perejil','Pimiento morrón','Plátano','Zanahoria'],
-  'Carnicería, pescadería y huevo': ['Bistec de res','Falda de res','Filete de pescado o salmón','Huevo','Pechuga de pavo','Pechuga de pollo'],
-  'Lácteos y quesos': ['Leche deslactosada light','Queso panela','Requesón','Yogurt griego natural sin azúcar'],
-  'Panadería y tortillería': ['Galletas María','Pan Bimbo cero cero','Pan pita taquero','Tortilla de maíz','Tostadas horneadas Susalia','Totopos horneados Susalia'],
-  'Abarrotes y despensa': ['Aceite de oliva','Almendras','Arroz integral','Brownie/barrita Fiber One','Creatina monohidratada','Crema de cacahuate sin azúcar','Hojuelas de avena','Linaza molida','Mayonesa','Miel sin azúcar','Mostaza','Pasta integral cocida','Proteína vegetal Birdman']
+  'Frutas y Verduras': ['Aguacate','Apio','Arúgula','Cebolla morada','Cebolla','Cebollita','Chile jalapeño','Elote desgranado','Espinaca (picada)','Espinaca fresca','Espinaca','Fresas','Jitomate (salsa)','Jitomate (pico de gallo)','Jitomate','Lechuga romana','Lechuga','Limón','Mango','Manzana gala','Melón','Mix de verduras (lechuga, acelga, espinaca, jitomate, pepino, pimiento)','Pepino','Perejil','Pimiento morrón','Plátano','Zanahoria','Acelga','Jengibre','Papaya','Kiwi','Mandarina','Uvas','Ejotes','Papa','Calabaza italiana','Ajo','Champiñones'],
+  'Carnicería, pescadería y huevo': ['Bistec de res','Falda de res','Filete de pescado o salmón','Huevo','Pechuga de pavo','Pechuga de pollo','Tocino de pavo','Carne de res molida','Clara de huevo','Medallón de atún'],
+  'Lácteos y quesos': ['Leche deslactosada light','Queso panela','Requesón','Yogurt griego natural sin azúcar','Queso manchego light','Queso Oaxaca light','Queso cottage 1%','Leche light o de almendras sin azúcar'],
+  'Panadería y tortillería': ['Galletas María','Pan Bimbo cero cero','Pan pita taquero','Tortilla de maíz','Tostadas horneadas Susalia','Totopos horneados Susalia','Bolillo integral sin migajón','Pan thins','Rice cakes'],
+  'Abarrotes y despensa': ['Aceite de oliva','Almendras','Arroz integral','Brownie/barrita Fiber One','Creatina monohidratada','Crema de cacahuate sin azúcar','Hojuelas de avena','Linaza molida','Mayonesa','Miel sin azúcar','Mostaza','Pasta integral cocida','Proteína vegetal Birdman','Cúrcuma en polvo','Frijoles cocidos','Aceite vegetal','Chícharos o edamames o garbanzos cocidos','Granola sin azúcar']
 };
 var DEPT_ORDER = ['Frutas y Verduras','Carnicería, pescadería y huevo','Lácteos y quesos','Panadería y tortillería','Abarrotes y despensa','Otros'];
 function deptOf(name){
@@ -875,7 +933,7 @@ function renderHistorial(){
         html += barRow('Comidas', mealsDone, MEAL_ORDER.length, 'var(--pl-green)', 'var(--pl-green-l)');
         html += barRow('Agua (thermos)', e.water||0, 5, 'var(--pl-azu)', 'var(--pl-azu-l)');
         html += barRow('Suplementos', suppsDone, SUPPS.length, 'var(--pl-gold)', 'var(--pl-gold-l)');
-        if(e.bp && e.bp.length){ html += '<p style="font-size:12px;margin:6px 0 0;">Presión: '+e.bp.map(function(b){return b.sys+'/'+b.dia+' ('+b.pulse+' lpm) '+b.time;}).join(' · ')+'</p>'; }
+        if(e.bp && e.bp.length){ html += '<p style="font-size:12px;margin:6px 0 0;">Presión: '+e.bp.map(function(b){return b.sys+'/'+b.dia+' ('+b.pulse+' lpm, '+(b.arm==='derecho'?'brazo derecho':'brazo izquierdo')+') '+b.time;}).join(' · ')+'</p>'; }
         if(e.exercise && (e.exercise.min||e.exercise.kcal)){ html += '<p style="font-size:12px;margin:4px 0 0;">Ejercicio: '+(e.exercise.min||0)+' min · '+(e.exercise.kcal||0)+' kcal</p>'; }
         if(e.obs){ html += '<p style="font-size:12px;margin:4px 0 0;color:#6b6b64;">Nota: '+e.obs+'</p>'; }
       }
@@ -949,7 +1007,7 @@ function renderNutriologa(){
       if(!e){ html += '<p class="pl-empty">Sin registro.</p>'; }
       else {
         html += '<p style="font-size:12px;color:#6b6b64;margin:4px 0 0;">Comidas '+e.mealsDone+'/'+e.mealsTotal+' · Agua '+e.water+'/5 thermos · Suplementos '+e.suppsDone+'/'+e.suppsTotal+
-          (e.bp&&e.bp.length? ' · Presión: '+e.bp.map(function(b){return b.sys+'/'+b.dia+' ('+b.pulse+' lpm)';}).join(', '):'')+
+          (e.bp&&e.bp.length? ' · Presión: '+e.bp.map(function(b){return b.sys+'/'+b.dia+' ('+b.pulse+' lpm, '+(b.arm==='derecho'?'der.':'izq.')+')';}).join(', '):'')+
           ((e.exercise&&(e.exercise.min||e.exercise.kcal))? ' · Ejercicio '+e.exercise.min+' min / '+e.exercise.kcal+' kcal':'')+'</p>';
       }
       html += '</div>';
@@ -975,7 +1033,7 @@ function downloadWeeklyCSV(days7){
   days7.forEach(function(d){
     var e = d.entry;
     if(!e){ rows.push([d.key, d.label, '', '', '', '', '', '', '', '', 'Sin registro']); return; }
-    var bpStr = (e.bp && e.bp.length)? e.bp.map(function(b){return b.sys+'/'+b.dia+' ('+b.pulse+' lpm) '+b.time;}).join(' | ') : '';
+    var bpStr = (e.bp && e.bp.length)? e.bp.map(function(b){return b.sys+'/'+b.dia+' ('+b.pulse+' lpm, '+(b.arm==='derecho'?'brazo derecho':'brazo izquierdo')+') '+b.time;}).join(' | ') : '';
     rows.push([d.key, d.label, e.mealsDone, e.mealsTotal, e.water, e.suppsDone, e.suppsTotal, bpStr, (e.exercise?e.exercise.min:0), (e.exercise?e.exercise.kcal:0), e.obs||'']);
   });
   var csv = rows.map(function(r){ return r.map(csvEscape).join(','); }).join('\r\n');
@@ -992,6 +1050,13 @@ function downloadWeeklyCSV(days7){
 }
 
 function render(){
+  var realToday = todayKey(new Date());
+  if(realToday !== todayKey(state.date)){
+    state.date = new Date();
+    state.localDayFinalized = false;
+    loadDailyLog().then(render);
+    return;
+  }
   renderStats();
   renderNav();
   if(state.tab==='hoy') renderHoy();
