@@ -385,7 +385,7 @@ function todayKey(d){
 }
 function dayIndex(d){ d=d||new Date(); var j=d.getDay(); return j===0?6:j-1; }
 
-var state = { weekPlan:null, dailyLog:null, despensaChecked:{}, meds:[], antro:null, nextAppt:null, tab:'hoy', date:new Date(), localDayFinalized:false };
+var state = { weekPlan:null, dailyLog:null, despensaChecked:{}, expressChecked:{}, expressDay:null, meds:[], antro:null, nextAppt:null, tab:'hoy', date:new Date(), localDayFinalized:false };
 
 function defaultWeekPlan(){
   var wp={};
@@ -404,6 +404,8 @@ async function loadState(){
   if(!wp) await saveWeekPlan();
   var desp = await fsGet('despensa-checked');
   state.despensaChecked = desp || {};
+  var expressChk = await fsGet('despensa-express-checked');
+  state.expressChecked = expressChk || {};
   var meds = await fsGet('meds-list');
   if(meds){ state.meds = migrateMeds(meds); }
   else { state.meds = DEFAULT_MEDS.slice(); await saveMeds(); }
@@ -463,6 +465,12 @@ async function saveDailyLog(){
   return fsSet('daily-'+todayKey(state.date), state.dailyLog);
 }
 async function saveDespensa(){ return fsSet('despensa-checked', state.despensaChecked); }
+async function saveExpress(){ return fsSet('despensa-express-checked', state.expressChecked); }
+function tomorrowDayName(){
+  var d = new Date(state.date);
+  d.setDate(d.getDate()+1);
+  return DAYS[dayIndex(d)];
+}
 async function saveMeds(){ return fsSet('meds-list', state.meds); }
 
 function toast(msg){ var t=document.getElementById('pl-toast'); t.textContent=msg; setTimeout(function(){ if(t.textContent===msg) t.textContent=''; },2200); }
@@ -506,7 +514,7 @@ function renderStats(){
 }
 
 function renderNav(){
-  var tabs=[['hoy','Hoy'],['semana','Semana'],['despensa','Despensa'],['equivalentes','Equivalentes'],['suplementos','Suplementos'],['historial','Historial'],['nutriologa','Nutrióloga']];
+  var tabs=[['hoy','Hoy'],['semana','Semana'],['despensa','Despensa'],['express','Despensa Express'],['equivalentes','Equivalentes'],['suplementos','Suplementos'],['historial','Historial'],['nutriologa','Nutrióloga']];
   document.getElementById('pl-nav').innerHTML = tabs.map(function(t){
     return '<button data-tab="'+t[0]+'" class="'+(state.tab===t[0]?'active':'')+'">'+t[1]+'</button>';
   }).join('');
@@ -756,6 +764,86 @@ function renderDespensa(){
     });
     document.getElementById('pl-copy-shop').onclick=function(){
       var lines=['LISTA DE DESPENSA — Semana',''];
+      DEPT_ORDER.forEach(function(dept){
+        if(!grouped[dept] || grouped[dept].length===0) return;
+        lines.push(dept.toUpperCase());
+        grouped[dept].forEach(function(it){ lines.push('  - '+(Math.round(it.q*100)/100)+' '+it.u+' de '+it.n); });
+        lines.push('');
+      });
+      var text = lines.join('\n');
+      if(navigator.clipboard){ navigator.clipboard.writeText(text).then(function(){ toast('Lista copiada'); }); }
+    };
+  });
+}
+
+function renderDespensaExpress(){
+  document.getElementById('pl-body').innerHTML = '<div class="pl-card"><p class="pl-empty">Cargando despensa express...</p></div>';
+  if(!state.expressDay){ state.expressDay = tomorrowDayName(); }
+  fsGet('week-plan').then(function(savedPlan){
+    if(state.tab!=='express') return;
+    var plan = savedPlan || defaultWeekPlan();
+    state.weekPlan = plan;
+    var selDay = state.expressDay;
+
+    var totals = {};
+    MEAL_ORDER.forEach(function(mk){
+      var opt = mealOption(mk, plan[selDay][mk]);
+      (opt.ing||[]).forEach(function(ing){
+        if(OMIT_FROM_SHOP.indexOf(ing.n)!==-1) return;
+        var key = ing.n+'|'+ing.u;
+        if(!totals[key]) totals[key]={n:ing.n,u:ing.u,q:0};
+        totals[key].q += ing.q;
+      });
+    });
+    var grouped = {};
+    Object.keys(totals).forEach(function(k){
+      var it = totals[k];
+      var dept = deptOf(it.n);
+      if(!grouped[dept]) grouped[dept]=[];
+      grouped[dept].push(it);
+    });
+    Object.keys(grouped).forEach(function(d){ grouped[d].sort(function(a,b){return a.n.localeCompare(b.n);}); });
+
+    var html = '<div class="pl-card"><h3>Despensa Express <button class="pl-btn ghost" id="pl-copy-express">Copiar lista</button></h3>';
+    html += '<p style="font-size:12px;color:#6b6b64;margin-bottom:10px;">Solo lo que necesitas para un día — ideal cuando no te alcanza el tiempo de preparar toda la semana. Por defecto muestra mañana; puedes elegir cualquier día.</p>';
+    html += '<div class="pl-catbtns">';
+    DAYS.forEach(function(d){
+      var isTomorrow = d===tomorrowDayName();
+      html += '<button data-expressday="'+d+'" class="'+(selDay===d?'active':'')+'" style="background:'+(selDay===d?'var(--pl-green)':'var(--pl-green-l)')+';color:'+(selDay===d?'#fff':'var(--pl-green)')+';">'+d+(isTomorrow?' (mañana)':'')+'</button>';
+    });
+    html += '</div></div>';
+
+    html += '<div class="pl-card"><h3>Para '+selDay+'</h3>';
+    var hasItems = Object.keys(grouped).length>0;
+    if(!hasItems){ html += '<p class="pl-empty">No hay ingredientes con cantidad definida para ese día.</p>'; }
+    DEPT_ORDER.forEach(function(dept){
+      if(!grouped[dept] || grouped[dept].length===0) return;
+      html += '<h4 style="font-size:13px;margin:14px 0 6px;color:var(--pl-green);">'+dept+'</h4><ul id="pl-shop-express">';
+      grouped[dept].forEach(function(it){
+        var key = it.n+'|'+it.u;
+        var checked = state.expressChecked[key];
+        var qty = (Math.round(it.q*100)/100);
+        html += '<li class="'+(checked?'done':'')+'"><input type="checkbox" class="pl-check" data-expresskey="'+key+'" '+(checked?'checked':'')+'><span class="mono">'+qty+' '+it.u+'</span> — <span>'+it.n+'</span></li>';
+      });
+      html += '</ul>';
+    });
+    html += '</div>';
+
+    document.getElementById('pl-body').innerHTML = html;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-expressday]'), function(b){
+      b.onclick=function(){ state.expressDay = b.getAttribute('data-expressday'); render(); };
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-expresskey]'), function(cb){
+      cb.onchange=function(){
+        var key = cb.getAttribute('data-expresskey');
+        var prev = state.expressChecked[key];
+        state.expressChecked[key] = cb.checked; render();
+        saveExpress().then(function(ok){ if(!ok){ state.expressChecked[key]=prev; } render(); });
+      };
+    });
+    var copyBtn = document.getElementById('pl-copy-express');
+    if(copyBtn) copyBtn.onclick=function(){
+      var lines=['DESPENSA EXPRESS — '+selDay,''];
       DEPT_ORDER.forEach(function(dept){
         if(!grouped[dept] || grouped[dept].length===0) return;
         lines.push(dept.toUpperCase());
@@ -1062,6 +1150,7 @@ function render(){
   if(state.tab==='hoy') renderHoy();
   else if(state.tab==='semana') renderSemana();
   else if(state.tab==='despensa') renderDespensa();
+  else if(state.tab==='express') renderDespensaExpress();
   else if(state.tab==='equivalentes') renderEquivalentes();
   else if(state.tab==='suplementos') renderSuplementos();
   else if(state.tab==='historial') renderHistorial();
@@ -1073,4 +1162,3 @@ loadState().then(render);
 })();
 </script>
 </body></html>
-
