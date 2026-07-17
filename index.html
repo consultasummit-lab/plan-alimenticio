@@ -1005,9 +1005,33 @@ function wireConsultasCard(){
 function renderHistorial(){
   document.getElementById('pl-body').innerHTML = renderConsultasCard()+'<div class="pl-card"><p class="pl-empty">Cargando historial...</p></div>';
   wireConsultasCard();
-  loadHistory().then(function(days){
+  loadHistory(15).then(function(days){
     if(state.tab!=='historial') return;
-    var html = '<div class="pl-card"><h3>Historial · últimos 7 días <button class="pl-btn ghost" id="pl-refresh-hist">🔄 Actualizar</button></h3>';
+
+    var allBp = [];
+    days.forEach(function(d){
+      if(d.entry && d.entry.bp && d.entry.bp.length){
+        d.entry.bp.forEach(function(b){ allBp.push({date:d.key, label:d.label, b:b}); });
+      }
+    });
+    var bpHtml = '<div class="pl-card"><h3>Presión arterial · últimos 15 días <span class="pl-badge" style="background:var(--pl-frut-l);color:var(--pl-frut);">'+allBp.length+' lecturas</span></h3>';
+    if(allBp.length===0){ bpHtml += '<p class="pl-empty">Sin lecturas registradas en este periodo.</p>'; }
+    else {
+      var daysWithReading = {};
+      allBp.forEach(function(r){ daysWithReading[r.date]=true; });
+      var weeksApprox = 15/7;
+      var target = Math.round(3*weeksApprox);
+      bpHtml += '<p style="font-size:12px;color:#6b6b64;margin-bottom:8px;">'+Object.keys(daysWithReading).length+' días con al menos una lectura (meta aprox. '+target+' en 15 días, a 3x/semana).</p>';
+      bpHtml += '<ul style="list-style:none;padding:0;margin:0;">';
+      allBp.forEach(function(r){
+        var armLabel = r.b.arm==='derecho' ? 'Brazo derecho' : 'Brazo izquierdo';
+        bpHtml += '<li style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--pl-line);"><span class="mono">'+r.date+' '+r.b.time+'</span><span>'+r.b.sys+'/'+r.b.dia+' mmHg · '+r.b.pulse+' lpm · '+armLabel+'</span></li>';
+      });
+      bpHtml += '</ul>';
+    }
+    bpHtml += '</div>';
+
+    var html = '<div class="pl-card"><h3>Historial · últimos 15 días <button class="pl-btn ghost" id="pl-refresh-hist">🔄 Actualizar</button></h3>';
     days.forEach(function(d){
       var e = d.entry;
       var isToday = d.key===todayKey(state.date);
@@ -1028,7 +1052,7 @@ function renderHistorial(){
       html += '</div>';
     });
     html += '</div>';
-    document.getElementById('pl-body').innerHTML = renderConsultasCard()+html;
+    document.getElementById('pl-body').innerHTML = renderConsultasCard()+bpHtml+html;
     wireConsultasCard();
     var refreshBtn = document.getElementById('pl-refresh-hist');
     if(refreshBtn) refreshBtn.onclick=function(){ renderHistorial(); };
